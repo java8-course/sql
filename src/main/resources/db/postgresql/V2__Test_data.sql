@@ -59,7 +59,21 @@ UNION ALL SELECT 3, (SELECT person_id FROM person WHERE first_name = 'Name3');
 INSERT INTO job_history(employee_id, position_code, employer_code, duration)
     SELECT 1, 'dev', 'epam', 10
 UNION ALL SELECT 1, 'dev', 'ya', 1
-UNION ALL SELECT 2, 'QA', 'google', 2;
+UNION ALL SELECT 2, 'QA', 'google', 2
+UNION ALL SELECT 2, 'BA', 'google', 1
+UNION ALL SELECT 2, 'QA', 'google', 1
+UNION ALL SELECT 2, 'QA', 'abc', 2
+UNION ALL SELECT 2, 'dev', 'epam', 2
+UNION ALL SELECT 2, 'QA', 'epam', 2
+UNION ALL SELECT 2, 'BA', 'abc', 2
+
+UNION ALL SELECT 3, 'BA', 'google', 1
+UNION ALL SELECT 3, 'QA', 'google', 1
+UNION ALL SELECT 3, 'dev', 'google', 1
+UNION ALL SELECT 3, 'dev', 'google', 1
+UNION ALL SELECT 3, 'BA', 'google', 1
+UNION ALL SELECT 3, 'QA', 'google', 1
+;
 
 INSERT INTO subscription(email, name)
     SELECT 'name1@email', 'name1'
