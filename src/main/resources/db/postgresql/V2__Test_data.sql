@@ -31,7 +31,7 @@ UNION ALL SELECT 4, 'Name4', 'Last name 4', 'name4@email', 44
 UNION ALL SELECT 5, 'Name5', 'Last name 5', 'name5@email', 45
 UNION ALL SELECT 6, 'Name6', 'Last name 6', 'name6@email', 46
 UNION ALL SELECT 7, 'Name7', 'Last name 7', 'name7@email', 47
--- UNION ALL SELECT 8, 'Name8', 'Last name 8', 'name8@email', 41
+UNION ALL SELECT 8, 'Name8', 'Last name 8', 'name8@email', 41
 UNION ALL SELECT 9, 'Name9', 'Last name 9', 'name9@email', 42
 UNION ALL SELECT 10, 'Name10', 'Last name 10', 'name10@email', 34
 UNION ALL SELECT 11, 'Name11', 'Last name 11', 'name11@email', 54
@@ -53,7 +53,15 @@ UNION ALL SELECT 23, 'Name23', 'Last name 23', 'name23@email', 11
 INSERT INTO employee (employee_id, person_id)
           SELECT 1, (SELECT person_id FROM person WHERE first_name = 'John')
 UNION ALL SELECT 2, (SELECT person_id FROM person WHERE first_name = 'Name2')
-UNION ALL SELECT 3, (SELECT person_id FROM person WHERE first_name = 'Name3');
+UNION ALL SELECT 3, (SELECT person_id FROM person WHERE first_name = 'Name3')
+UNION ALL SELECT 4, (SELECT person_id FROM person WHERE first_name = 'Name4')
+UNION ALL SELECT 5, (SELECT person_id FROM person WHERE first_name = 'Name5')
+UNION ALL SELECT 6, (SELECT person_id FROM person WHERE first_name = 'Name6')
+UNION ALL SELECT 7, (SELECT person_id FROM person WHERE first_name = 'Name7')
+UNION ALL SELECT 8, (SELECT person_id FROM person WHERE first_name = 'Name8')
+UNION ALL SELECT 9, (SELECT person_id FROM person WHERE first_name = 'Name9')
+UNION ALL SELECT 10, (SELECT person_id FROM person WHERE first_name = 'Name10')
+;
 
 
 INSERT INTO job_history(employee_id, position_code, employer_code, duration)
@@ -68,11 +76,60 @@ UNION ALL SELECT 2, 'QA', 'epam', 2
 UNION ALL SELECT 2, 'BA', 'abc', 2
 
 UNION ALL SELECT 3, 'BA', 'google', 1
-UNION ALL SELECT 3, 'QA', 'google', 1
+UNION ALL SELECT 3, 'QA', 'google', 15
 UNION ALL SELECT 3, 'dev', 'google', 1
 UNION ALL SELECT 3, 'dev', 'google', 1
 UNION ALL SELECT 3, 'BA', 'google', 1
 UNION ALL SELECT 3, 'QA', 'google', 1
+
+UNION ALL SELECT 4, 'BA', 'google', 2
+UNION ALL SELECT 4, 'QA', 'google', 2
+UNION ALL SELECT 4, 'dev', 'google', 25
+UNION ALL SELECT 4, 'dev', 'google', 2
+UNION ALL SELECT 4, 'BA', 'google', 2
+UNION ALL SELECT 4, 'QA', 'google', 2
+
+UNION ALL SELECT 5, 'BA', 'google', 3
+UNION ALL SELECT 5, 'QA', 'google', 3
+UNION ALL SELECT 5, 'dev', 'google', 3
+UNION ALL SELECT 5, 'dev', 'google', 3
+UNION ALL SELECT 5, 'BA', 'google', 35
+UNION ALL SELECT 5, 'QA', 'google', 3
+
+UNION ALL SELECT 6, 'BA', 'google', 4
+UNION ALL SELECT 6, 'QA', 'google', 14
+UNION ALL SELECT 6, 'dev', 'google', 4
+UNION ALL SELECT 6, 'dev', 'google', 4
+UNION ALL SELECT 6, 'BA', 'google', 4
+UNION ALL SELECT 6, 'QA', 'google', 4
+
+UNION ALL SELECT 7, 'BA', 'google', 10
+UNION ALL SELECT 7, 'QA', 'google', 10
+UNION ALL SELECT 7, 'dev', 'google', 20
+UNION ALL SELECT 7, 'dev', 'google', 10
+UNION ALL SELECT 7, 'BA', 'google', 10
+UNION ALL SELECT 7, 'QA', 'google', 10
+
+UNION ALL SELECT 8, 'BA', 'google', 7
+UNION ALL SELECT 8, 'QA', 'google', 7
+UNION ALL SELECT 8, 'dev', 'google', 7
+UNION ALL SELECT 8, 'dev', 'google', 7
+UNION ALL SELECT 8, 'BA', 'google', 77
+UNION ALL SELECT 8, 'QA', 'google', 7
+
+UNION ALL SELECT 9, 'BA', 'google', 6
+UNION ALL SELECT 9, 'QA', 'google', 6
+UNION ALL SELECT 9, 'dev', 'google', 6
+UNION ALL SELECT 9, 'dev', 'google', 6
+UNION ALL SELECT 9, 'BA', 'google', 6
+UNION ALL SELECT 9, 'QA', 'google', 6
+
+UNION ALL SELECT 10, 'BA', 'google', 11
+UNION ALL SELECT 10, 'QA', 'google', 11
+UNION ALL SELECT 10, 'dev', 'google', 11
+UNION ALL SELECT 10, 'dev', 'google', 11
+UNION ALL SELECT 10, 'BA', 'google', 11
+UNION ALL SELECT 10, 'QA', 'google', 11
 ;
 
 INSERT INTO subscription(email, name)
