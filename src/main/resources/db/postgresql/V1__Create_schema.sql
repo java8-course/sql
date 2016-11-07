@@ -1,4 +1,4 @@
-DROP SCHEMA test_schema CASCADE;
+DROP SCHEMA IF EXISTS test_schema CASCADE;
 
 CREATE SCHEMA test_schema;
 

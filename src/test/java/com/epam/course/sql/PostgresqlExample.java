@@ -3,8 +3,8 @@ package com.epam.course.sql;
 import lombok.Builder;
 import lombok.Data;
 import org.flywaydb.core.Flyway;
-import org.h2.jdbcx.JdbcDataSource;
 import org.junit.*;
+import org.postgresql.ds.PGPoolingDataSource;
 import ru.yandex.qatools.embed.postgresql.PostgresExecutable;
 import ru.yandex.qatools.embed.postgresql.PostgresProcess;
 import ru.yandex.qatools.embed.postgresql.PostgresStarter;
@@ -19,7 +19,7 @@ import java.sql.SQLException;
 
 public class PostgresqlExample {
     private static DataSource ds;
-    private static Flyway flyway;
+    private static Flyway flyway = new Flyway();
     private static PostgresProcess process;
 
     @BeforeClass
@@ -33,23 +33,26 @@ public class PostgresqlExample {
         final PostgresStarter<PostgresExecutable, PostgresProcess> runtime = PostgresStarter.getDefaultInstance();
         final PostgresConfig config = PostgresConfig.defaultWithDbName(name, username, password);
 
-        process = runtime.prepare(config).start();
+        final PostgresExecutable executable = runtime.prepare(config);
+        process = executable.start();
 
-        String url = String.format("jdbc:postgresql://%s:%s/%s",
+        final String url = String.format("jdbc:postgresql://%s:%s/%s",
                 config.net().host(),
                 config.net().port(),
                 config.storage().dbName()
         );
 
-        JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL(url);
+        PGPoolingDataSource ds = new PGPoolingDataSource();
+        ds.setDatabaseName(config.storage().dbName());
+        ds.setPortNumber(config.net().port());
+        ds.setServerName(config.net().host());
         ds.setUser(username);
         ds.setPassword(password);
         PostgresqlExample.ds = ds;
 
-        flyway = new Flyway();
-        flyway.setDataSource(ds);
         flyway.setLocations("db/postgresql");
+        flyway.setDataSource(ds);
+//        flyway.setDataSource(url, username, password);
     }
 
     @AfterClass
@@ -96,7 +99,7 @@ public class PostgresqlExample {
             final PreparedStatement insert =
                     connection.prepareStatement(
                             "INSERT INTO test_schema.person(person_id, first_name, last_name, email, age)" +
-                                    "VALUES (test_schema.person_seq.nextval, 'TmpName', 'TmpLastName', 'TmpEmail', 55)"
+                                    "VALUES (nextval('test_schema.person_seq'), 'TmpName', 'TmpLastName', 'TmpEmail', 55)"
                     );
 
             System.out.println("Inserted: " + insert.executeUpdate());
