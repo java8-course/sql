@@ -61,6 +61,8 @@ UNION ALL SELECT 7, (SELECT person_id FROM person WHERE first_name = 'Name7')
 UNION ALL SELECT 8, (SELECT person_id FROM person WHERE first_name = 'Name8')
 UNION ALL SELECT 9, (SELECT person_id FROM person WHERE first_name = 'Name9')
 UNION ALL SELECT 10, (SELECT person_id FROM person WHERE first_name = 'Name10')
+UNION ALL SELECT 11, (SELECT person_id FROM person WHERE first_name = 'Name11')
+UNION ALL SELECT 12, (SELECT person_id FROM person WHERE first_name = 'Name12')
 ;
 
 

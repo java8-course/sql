@@ -122,4 +122,31 @@ public class H2Example {
             printPersons(resultSet);
         }
     }
+
+    @Test
+    public void delete() throws SQLException {
+        try(Connection connection = ds.getConnection()) {
+            final PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM test_schema.person" +
+                            " WHERE email LIKE 'name%@email'" +
+                            "   AND NOT exists(SELECT 1 FROM test_schema.employee e WHERE e.person_id = person.person_id)"
+            );
+
+            final int cnt = statement.executeUpdate();
+
+            System.out.println("Deleted count: " + cnt);
+
+            final PreparedStatement query =
+                    connection.prepareStatement(
+                            "SELECT p.person_id, p.first_name, p.last_name, p.email, p.age" +
+                                    " FROM test_schema.person p"
+                    );
+
+            final ResultSet resultSet = query.executeQuery();
+
+            printPersons(resultSet);
+        }
+    }
+
+
 }
