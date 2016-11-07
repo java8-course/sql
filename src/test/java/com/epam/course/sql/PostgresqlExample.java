@@ -12,10 +12,7 @@ import ru.yandex.qatools.embed.postgresql.config.PostgresConfig;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PostgresqlExample {
     private static DataSource ds;
@@ -23,10 +20,10 @@ public class PostgresqlExample {
     private static PostgresProcess process;
 
     @BeforeClass
-    public static void startUp() throws IOException, ClassNotFoundException {
+    public static void startUp() throws IOException, ClassNotFoundException, SQLException {
         final String name = "yourDbname";
         final String username = "yourUser";
-        final String password = "youPassword";
+        final String password = "yourPassword";
 
         Class.forName("org.postgresql.Driver");
 
@@ -41,6 +38,13 @@ public class PostgresqlExample {
                 config.net().port(),
                 config.storage().dbName()
         );
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            final PreparedStatement statement = connection.prepareStatement(
+                    "CREATE SCHEMA test_schema;" +
+                            " ALTER USER \"" + username + "\" SET search_path TO test_schema;");
+            statement.execute();
+        }
 
         PGPoolingDataSource ds = new PGPoolingDataSource();
         ds.setDatabaseName(config.storage().dbName());
@@ -66,7 +70,7 @@ public class PostgresqlExample {
     }
 
     @After
-    public void after() {
+    public void after() throws SQLException {
         flyway.clean();
     }
 

@@ -1,4 +1,4 @@
-SET SCHEMA 'test_schema';
+SET search_path TO test_schema;
 
 DELETE FROM job_history;
 DELETE FROM employee;

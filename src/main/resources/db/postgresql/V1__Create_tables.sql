@@ -1,8 +1,6 @@
-DROP SCHEMA IF EXISTS test_schema CASCADE;
+-- Create test_schema!
 
-CREATE SCHEMA test_schema;
-
-SET SCHEMA 'test_schema';
+SET search_path TO test_schema;
 
 CREATE SEQUENCE person_seq MINVALUE 1000;
 

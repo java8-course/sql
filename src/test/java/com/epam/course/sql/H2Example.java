@@ -10,27 +10,34 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class H2Example {
     private static DataSource ds;
     private static Flyway flyway;
 
     @BeforeClass
-    public static void startUp() throws ClassNotFoundException {
+    public static void startUp() throws ClassNotFoundException, SQLException {
+        final String url = "jdbc:h2:mem:test_mem;DB_CLOSE_DELAY=-1;MODE=PostgreSQL";
+        final String username = "sa";
+        final String password = "sa";
+
         Class.forName("org.h2.Driver");
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            final PreparedStatement statement = connection.prepareStatement("CREATE SCHEMA test_schema;");
+            statement.execute();
+        }
+
         JdbcDataSource ds = new JdbcDataSource();
-        ds.setURL("jdbc:h2:mem:test_mem;DB_CLOSE_DELAY=-1");
-        ds.setUser("sa");
-        ds.setPassword("sa");
+        ds.setURL(url + ";SCHEMA=test_schema");
+        ds.setUser(username);
+        ds.setPassword(password);
         H2Example.ds = ds;
 
         flyway = new Flyway();
         flyway.setDataSource(ds);
-        flyway.setLocations("db/h2");
+        flyway.setLocations("db/postgresql");
     }
 
     @Before
@@ -72,7 +79,8 @@ public class H2Example {
             final PreparedStatement insert =
                     connection.prepareStatement(
                             "INSERT INTO test_schema.person(person_id, first_name, last_name, email, age)" +
-                                    "VALUES (test_schema.person_seq.nextval, 'TmpName', 'TmpLastName', 'TmpEmail', 55)"
+                                    "VALUES (nextval('test_schema.person_seq'), 'TmpName', 'TmpLastName', 'TmpEmail', 55)"
+//                                    "VALUES (test_schema.person_seq.nextval, 'TmpName', 'TmpLastName', 'TmpEmail', 55)"
                     );
 
             System.out.println("Inserted: " + insert.executeUpdate());
